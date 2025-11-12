@@ -1,0 +1,5 @@
+# For production replace localhost:80 with your own domain
+
+localhost:80 {
+    reverse_proxy wordpress:80
+}
