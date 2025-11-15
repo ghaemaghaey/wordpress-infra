@@ -65,23 +65,6 @@ services:
       timeout: 5s
       retries: 3
 
-  minio-init:
-    image: minio/mc:latest
-    container_name: soozan-minio-init
-    depends_on:
-      minio:
-        condition: service_healthy
-    environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: ${OS_SECRET_KEY}
-      MINIO_BUCKET_NAME: bucket
-    volumes:
-      - ./setup-minio.sh:/usr/local/bin/minio-init.sh
-    entrypoint: ["/bin/sh", "/usr/local/bin/minio-init.sh"]
-    restart: "no"
-    networks:
-      - info-network
-
 volumes:
   db_data:
   wordpress_data:
