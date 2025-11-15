@@ -76,7 +76,7 @@ services:
       MINIO_ROOT_PASSWORD: ${OS_SECRET_KEY}
       MINIO_BUCKET_NAME: bucket
     volumes:
-      - ./setup-bucket.sh:/usr/local/bin/minio-init.sh
+      - ./setup-minio.sh:/usr/local/bin/minio-init.sh
     entrypoint: ["/bin/sh", "/usr/local/bin/minio-init.sh"]
     restart: "no"
     networks:
