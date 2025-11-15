@@ -1,5 +1,11 @@
-# For production replace localhost:80 with your own domain
-
-localhost:80 {
+soozan.info {
     reverse_proxy wordpress:80
+}
+
+storage.soozan.info {
+  reverse_proxy http://minio:9000
+}
+
+admin.storage.soozan.info {
+  reverse_proxy http://minio:9001
 }

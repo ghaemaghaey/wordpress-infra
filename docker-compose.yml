@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - wordpress_network
+      - info-network
 
   wordpress:
     image: wordpress:latest
@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     networks:
-      - wordpress_network
+      - info-network
 
   caddy:
     image: caddy:latest
@@ -44,7 +44,43 @@ services:
     depends_on:
       - wordpress
     networks:
-      - wordpress_network
+      - info-network
+
+
+  minio:
+    image: minio/minio:latest
+    container_name: soozan-minio
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: ${OS_SECRET_KEY}
+    networks:
+      - info-network
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: soozan-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: ${OS_SECRET_KEY}
+      MINIO_BUCKET_NAME: bucket
+    volumes:
+      - ./setup-bucket.sh:/usr/local/bin/minio-init.sh
+    entrypoint: ["/bin/sh", "/usr/local/bin/minio-init.sh"]
+    restart: "no"
+    networks:
+      - info-network
 
 volumes:
   db_data:
@@ -52,6 +88,7 @@ volumes:
   caddy_data:
   caddy_config:
   caddy_logs:
+  minio-data:
 
 networks:
-  wordpress_network:
+  info-network:
