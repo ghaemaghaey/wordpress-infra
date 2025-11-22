@@ -46,6 +46,13 @@ services:
     networks:
       - info-network
 
+  notifier:
+    image: ghcr.io/lets-build-an-ocean/soozan-notifier:latest
+    container_name: notifier
+    restart: always
+    networks:
+      - info-network
+
 
 volumes:
   db_data:
