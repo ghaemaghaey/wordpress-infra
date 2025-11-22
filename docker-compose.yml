@@ -47,7 +47,7 @@ services:
       - info-network
 
   notifier:
-    image: ghcr.io/lets-build-an-ocean/soozan-notifier:latest
+    image: soozan-notifier:latest
     container_name: notifier
     restart: always
     networks:
