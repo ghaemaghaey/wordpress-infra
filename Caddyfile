@@ -9,3 +9,7 @@ storage.soozan.info {
 admin.storage.soozan.info {
   reverse_proxy http://minio:9001
 }
+
+notif.soozan.info {
+  reverse_proxy http://notifier:8080
+}
