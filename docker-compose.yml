@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - wordpress_network
+      - info-network
 
   wordpress:
     image: wordpress:latest
@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     networks:
-      - wordpress_network
+      - info-network
 
   caddy:
     image: caddy:latest
@@ -44,7 +44,15 @@ services:
     depends_on:
       - wordpress
     networks:
-      - wordpress_network
+      - info-network
+
+  notifier:
+    image: soozan-notifier:latest
+    container_name: notifier
+    restart: always
+    networks:
+      - info-network
+
 
 volumes:
   db_data:
@@ -54,4 +62,4 @@ volumes:
   caddy_logs:
 
 networks:
-  wordpress_network:
+  info-network:
